@@ -32,11 +32,11 @@ This project was developed with assistance from Claude (Anthropic).
 
 Claude was used for:
 
-Brainstorming and refining the system architecture and implementation approach.
-Providing implementation guidance and code suggestions.
-Debugging and resolving development issues.
-Assisting with the implementation and refinement of the fraud-detection logic and UI.
-Reviewing and improving parts of the project during development.
+- Brainstorming and refining the system architecture and implementation approach.
+- Providing implementation guidance and code suggestions.
+- Debugging and resolving development issues.
+- Assisting with the implementation and refinement of the fraud-detection logic and UI.
+- Reviewing and improving parts of the project during development.
 
 I made the final decisions on the system design, algorithms, features, and implementation, and reviewed and tested the generated suggestions before incorporating them into the project.
 
