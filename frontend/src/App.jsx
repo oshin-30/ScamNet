@@ -6,6 +6,7 @@ function App() {
   const [posts, setPosts] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showClusters, setShowClusters] = useState(false);
+    const [filter, setFilter] = useState('ALL');
     const [clusterCount, setClusterCount] = useState(0);
   const fetchClusterCount = () => {
     fetch('http://localhost:8080/api/posts/clusters')
@@ -14,7 +15,7 @@ function App() {
   };
   const [formData, setFormData] = useState({
     type: 'MARKETPLACE', title: '', description: '',
-    posterName: '', posterContact: '', location: ''
+    posterName: '', posterContact: '', location: '', priceOrSalary: ''
   });
   const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -91,6 +92,11 @@ function App() {
       <div className="hero-actions">
         <button className="primary-btn" onClick={() => setShowForm(true)}>+ New Listing</button>
         <button className="secondary-btn" onClick={() => setShowClusters(true)}>View Fraud Networks</button>
+        <div className="filter-tabs">
+          <button className={filter === 'ALL' ? 'tab-active' : ''} onClick={() => setFilter('ALL')}>All</button>
+          <button className={filter === 'MARKETPLACE' ? 'tab-active' : ''} onClick={() => setFilter('MARKETPLACE')}>Marketplace</button>
+          <button className={filter === 'JOB' ? 'tab-active' : ''} onClick={() => setFilter('JOB')}>Jobs</button>
+        </div>
       </div>
 
       {showForm && (
@@ -122,6 +128,9 @@ function App() {
             <input placeholder="Location" required
               value={formData.location}
               onChange={(e) => setFormData({...formData, location: e.target.value})} />
+            <input placeholder={formData.type === 'JOB' ? 'Salary (e.g. ₹25,000/month)' : 'Price (e.g. ₹15,000)'}
+              value={formData.priceOrSalary}
+              onChange={(e) => setFormData({...formData, priceOrSalary: e.target.value})} />
 
             <input type="file" accept="image/*" required
               onChange={(e) => setImageFile(e.target.files[0])} />
@@ -160,7 +169,7 @@ function App() {
           <div className="empty">No posts yet.</div>
         ) : (
           <div className="grid">
-            {posts.slice().reverse().map(post => {
+              {posts.filter(p => filter === 'ALL' || p.type === filter).slice().reverse().map(post => {
               const score = post.riskScore || 0;
               let riskClass = '', badgeClass = 'badge-low', label = 'CLEAR';
               if (score >= 0.8) { riskClass = 'risk-high'; badgeClass = 'badge-high'; label = 'HIGH RISK'; }
@@ -169,18 +178,16 @@ function App() {
               return (
                   <div key={post.id} className="post">
                   <button className="delete-btn" onClick={() => handleDelete(post.id)}>×</button>
-                  <div className="post-top">
-                  <div className={`gauge gauge-${score >= 0.8 ? 'high' : score > 0 ? 'medium' : 'low'}`}>
-                  {score.toFixed(1)}
-                  </div>
-                  <span className={`status ${score >= 0.8 ? 'status-high' : score > 0 ? 'status-medium' : ''}`}>{label}</span>
-                  <span className={`type-tag ${post.type === 'JOB' ? 'type-job' : 'type-market'}`}>
-                    {post.type === 'JOB' ? 'JOB' : 'MARKET'}
-                  </span>
+                    <div className="post-top">
+                    <div className={`gauge gauge-${score >= 0.8 ? 'high' : score > 0 ? 'medium' : 'low'}`}>
+                      {score.toFixed(1)}
+                    </div>
+                    <span className={`status ${score >= 0.8 ? 'status-high' : score > 0 ? 'status-medium' : ''}`}>{label}</span>
                   </div>
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
                   <p className="location-line">📍 {post.location}</p>
+                  {post.priceOrSalary && <p className="price-line">💰 {post.priceOrSalary}</p>}
                   <p>{post.posterName} · {post.posterContact}</p>
                   <img src={`http://localhost:8080/uploads/${post.imageUrl}`} alt={post.title} />
                     {post.riskReasons && (

@@ -34,7 +34,11 @@ public class ClusterService {
                 boolean burstTogether = a.getPostedAt() != null && b.getPostedAt() != null
                         && Math.abs(ChronoUnit.MINUTES.between(a.getPostedAt(), b.getPostedAt())) <= 15;
 
-                if (sameImage || sameContact || burstTogether) {
+                // Burst timing alone isn't suspicious — only connect on burst if there's ALSO some other shared trait
+                boolean suspiciousBurst = burstTogether && (sameImage || sameContact
+                        || (a.getLocation() != null && a.getLocation().equalsIgnoreCase(b.getLocation())));
+
+                if (sameImage || sameContact || suspiciousBurst) {
                     union(parent, a.getId(), b.getId());
                 }
             }

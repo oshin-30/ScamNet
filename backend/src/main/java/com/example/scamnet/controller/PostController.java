@@ -39,6 +39,7 @@ public class PostController {
             @RequestParam String posterName,
             @RequestParam String posterContact,
             @RequestParam String location,
+            @RequestParam(required = false) String priceOrSalary,
             @RequestParam("image") MultipartFile imageFile
     ) throws IOException {
 
@@ -69,6 +70,7 @@ public class PostController {
         post.setPosterName(posterName);
         post.setPosterContact(posterContact);
         post.setLocation(location);
+        post.setPriceOrSalary(priceOrSalary);
         post.setImageUrl(filename);
         post.setImageHash(hash);
         post.setPostedAt(LocalDateTime.now());
@@ -76,7 +78,9 @@ public class PostController {
         double riskScore = 0.0;
         if (!matches.isEmpty()) riskScore += 0.5;
         if (contactReused) riskScore += 0.3;
-        if (burstDetected) riskScore += 0.2;
+        boolean burstCounts = burstDetected && (!matches.isEmpty() || contactReused);
+        if (burstCounts) riskScore += 0.2;
+
         java.util.List<String> reasons = new java.util.ArrayList<>();
         if (!matches.isEmpty()) {
             java.util.List<String> matchedTitles = existingPosts.stream()
@@ -88,13 +92,25 @@ public class PostController {
         if (contactReused) {
             reasons.add("Contact number reused under a different name");
         }
-        if (burstDetected) {
+        if (burstCounts) {
             reasons.add("Part of an unusual burst of " + (recentPostCount + 1) + " posts within 15 minutes");
         }
 
         post.setRiskScore(Math.min(riskScore, 1.0));
         post.setRiskReasons(String.join(" | ", reasons));
         Post saved = postRepository.save(post);
+        
+        // Retroactively bump risk on matched posts too, since they're now confirmed part of a network
+        if (!matches.isEmpty()) {
+            for (Post existing : existingPosts) {
+                if (matches.contains(existing.getId()) && (existing.getRiskScore() == null || existing.getRiskScore() < 0.5)) {
+                    existing.setRiskScore(0.5);
+                    String prevReasons = existing.getRiskReasons() != null ? existing.getRiskReasons() + " | " : "";
+                    existing.setRiskReasons(prevReasons + "Image reused in a later listing: \"" + saved.getTitle() + "\"");
+                    postRepository.save(existing);
+                }
+            }
+        }
 
         java.util.Map<String, Object> response = new java.util.HashMap<>();
         response.put("post", saved);

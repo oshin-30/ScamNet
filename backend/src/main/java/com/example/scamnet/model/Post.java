@@ -34,6 +34,8 @@ public class Post {
     
     @Column(length = 1000)
     private String riskReasons;
+    
+    private String priceOrSalary;
 
     public Post() {}
 
@@ -73,4 +75,7 @@ public class Post {
     
     public String getRiskReasons() { return riskReasons; }
     public void setRiskReasons(String riskReasons) { this.riskReasons = riskReasons; }
+    
+    public String getPriceOrSalary() { return priceOrSalary; }
+    public void setPriceOrSalary(String priceOrSalary) { this.priceOrSalary = priceOrSalary; }
 }

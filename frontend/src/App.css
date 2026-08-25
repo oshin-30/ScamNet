@@ -440,7 +440,7 @@ main {
 }
 
 .post-top {
-  justify-content: space-between;
+  padding-right: 30px;
 }
 
 .type-tag {
@@ -456,3 +456,33 @@ main {
 .type-job { background: rgba(160,120,255,0.15); color: #A078FF; }
 
 .location-line { font-size: 12px; }
+
+.filter-tabs {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+.filter-tabs button {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+}
+.filter-tabs .tab-active {
+  background: var(--accent);
+  color: #0A0E13;
+  font-weight: 700;
+}
+
+.price-line {
+  color: var(--accent) !important;
+  font-weight: 600;
+}
