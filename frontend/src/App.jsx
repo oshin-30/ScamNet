@@ -189,7 +189,7 @@ function App() {
                   <p className="location-line">📍 {post.location}</p>
                   {post.priceOrSalary && <p className="price-line">💰 {post.priceOrSalary}</p>}
                   <p>{post.posterName} · {post.posterContact}</p>
-                  <img src={`https://scamnet-production.up.railway.app/uploads/${post.imageUrl}`} alt={post.title} />
+                  <img src={ post.imageUrl.startsWith("http") ? post.imageUrl : `https://scamnet-production.up.railway.app/uploads/${post.imageUrl}`} alt={post.title} />
                     {post.riskReasons && (
                     <div className="reasons">
                       {post.riskReasons.split(' | ').map((r, i) => (

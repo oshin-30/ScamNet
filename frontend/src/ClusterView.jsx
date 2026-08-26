@@ -46,7 +46,14 @@ function ClusterView({ onClose }) {
               <div className="cluster-graph">
                 {cluster.posts.map(post => (
                   <div key={post.id} className="graph-node">
-                    <img src={`https://scamnet-production.up.railway.app/uploads/${post.imageUrl}`} alt={post.title} />
+                    <img
+                      src={
+                        post.imageUrl.startsWith("http")
+                          ? post.imageUrl
+                          : `https://scamnet-production.up.railway.app/uploads/${post.imageUrl}`
+                      }
+                      alt={post.title}
+                    />
                     <p>{post.title}</p>
                     <p className="node-meta">{post.posterName}</p>
                   </div>
