@@ -2,6 +2,8 @@
 
 Built for BYAMN Buildathon 2026.
 
+🔗 **Live Demo:** https://scamnet-vert.vercel.app/
+
 ## Problem
 Fake job listings, marketplace scams, and phishing "too good to be true" posts affect millions of people globally. Current defenses (report buttons, keyword filters) are reactive and treat every post in isolation — they don't catch coordinated scam rings that reuse photos, phone numbers, and posting patterns across multiple fake accounts.
 
