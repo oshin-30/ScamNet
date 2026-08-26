@@ -9,7 +9,7 @@ function App() {
     const [filter, setFilter] = useState('ALL');
     const [clusterCount, setClusterCount] = useState(0);
   const fetchClusterCount = () => {
-    fetch('http://localhost:8080/api/posts/clusters')
+    fetch('https://scamnet-production.up.railway.app/api/posts/clusters')
       .then(res => res.json())
       .then(data => setClusterCount(data.length));
   };
@@ -21,7 +21,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
 
     const fetchPosts = () => {
-    fetch('http://localhost:8080/api/posts')
+    fetch('https://scamnet-production.up.railway.app/api/posts')
       .then(res => res.json())
       .then(data => setPosts(data));
     fetchClusterCount();
@@ -43,7 +43,7 @@ function App() {
     data.append('image', imageFile);
 
     try {
-      const res = await fetch('http://localhost:8080/api/posts', {
+      const res = await fetch('https://scamnet-production.up.railway.app/api/posts', {
         method: 'POST',
         body: data
       });
@@ -63,7 +63,7 @@ function App() {
   };
     const handleDelete = async (id) => {
     if (!window.confirm('Delete this post?')) return;
-    await fetch(`http://localhost:8080/api/posts/${id}`, { method: 'DELETE' });
+    await fetch(`https://scamnet-production.up.railway.app/api/posts/${id}`, { method: 'DELETE' });
     fetchPosts();
   };
 
@@ -189,7 +189,7 @@ function App() {
                   <p className="location-line">📍 {post.location}</p>
                   {post.priceOrSalary && <p className="price-line">💰 {post.priceOrSalary}</p>}
                   <p>{post.posterName} · {post.posterContact}</p>
-                  <img src={`http://localhost:8080/uploads/${post.imageUrl}`} alt={post.title} />
+                  <img src={`https://scamnet-production.up.railway.app/uploads/${post.imageUrl}`} alt={post.title} />
                     {post.riskReasons && (
                     <div className="reasons">
                       {post.riskReasons.split(' | ').map((r, i) => (

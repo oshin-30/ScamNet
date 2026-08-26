@@ -5,7 +5,7 @@ function ClusterView({ onClose }) {
   const [filter, setFilter] = useState('ALL');
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/posts/clusters')
+    fetch('https://scamnet-production.up.railway.app/api/posts/clusters')
       .then(res => res.json())
       .then(data => setClusters(data));
   }, []);
@@ -46,7 +46,7 @@ function ClusterView({ onClose }) {
               <div className="cluster-graph">
                 {cluster.posts.map(post => (
                   <div key={post.id} className="graph-node">
-                    <img src={`http://localhost:8080/uploads/${post.imageUrl}`} alt={post.title} />
+                    <img src={`https://scamnet-production.up.railway.app/uploads/${post.imageUrl}`} alt={post.title} />
                     <p>{post.title}</p>
                     <p className="node-meta">{post.posterName}</p>
                   </div>
