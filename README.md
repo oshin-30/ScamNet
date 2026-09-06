@@ -1,7 +1,5 @@
 # ScamNet — Network-Level Fraud Detection for Online Marketplaces & Job Postings
 
-Built for BYAMN Buildathon 2026.
-
 🔗 **Live Demo:** https://scamnet-vert.vercel.app/
 
 ## Problem
